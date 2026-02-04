@@ -9,7 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 const morgan = require('morgan');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
@@ -461,12 +461,16 @@ app.get('/api/view/:requestId', (req, res) => {
     }
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`
+// Start server (local dev)
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`
   ╔═══════════════════════════════════════════════╗
   ║     SSDC Backend Server Running!              ║
   ║     http://localhost:${PORT}                     ║
   ╚═══════════════════════════════════════════════╝
   `);
-});
+    });
+}
+
+module.exports = app;
